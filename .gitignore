@@ -1,2 +1,5 @@
 
 .token
+.venv
+.env
+.wrangler/cache
