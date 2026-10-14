@@ -1,6 +1,6 @@
 # CR Annotator
 
-Herramienta aislada (sin notebooks ni descargas) para calibrar cada video: el equipo marca **una sola caja** (`game_box`) si tiene marcos o indica que **todo el frame es partida** (`game_full=1`), guardándose en Cloudflare D1. Es lo único que se hace a mano antes del pipeline.
+Herramienta aislada (sin notebooks ni descargas) para revisar cada video: los videos agregados están en pantalla completa (`game_full=1`), guardándose en Cloudflare D1. Es la única revisión manual que se hace antes del pipeline.
 
 - Cloudflare Pages: `public/` (interfaz) + `functions/api/*` (API)
 - Cloudflare D1: cola de videos y calibraciones
@@ -24,13 +24,13 @@ Recomendado: protege el dominio con **Cloudflare Access** (gratis hasta 50 usuar
 ## Uso
 
 1. Busca videos y pulsa **+ Agregar URLs**: pega una o varias (una por línea). Quedan *pendientes*; los duplicados se ignoran.
-2. Para etiquetar, escribe tu nombre y pulsa **Siguiente video**.
-3. Si el video es solo la partida (lo habitual): **Todo el video es la partida**. Un clic, sin dibujar. Si trae algo más (barras, otra proporción), pausa en una partida, pulsa `D`, dibuja **una** caja sobre la pantalla del juego y *Guardar caja*.
-4. Si el video no sirve (youtuber, cortes, baja resolución), **Rechazar**.
+2. Al entrar, ingresa tu nombre (se guarda localmente). La app cargará automáticamente los videos pendientes y el video asignado en el reproductor.
+3. Si el video es válido: pulsa **✔ Aceptar video (Pantalla completa)** (guarda `game_full=1` y avanza automáticamente).
+4. Si el video no sirve (youtuber, cortes, baja resolución, no es 1v1): pulsa **✖ Rechazar video...**, selecciona o escribe un motivo (opcional) y confirma.
 
-Se puede agregar y etiquetar al mismo tiempo; no hace falta tener todos los videos cargados antes.
+Se puede agregar y revisar al mismo tiempo; no hace falta tener todos los videos cargados antes.
 
-5. **Videos** muestra todos los agregados, la duración total acumulada y permite **borrar** (también borra su calibración). No hay edición.
+5. **Todos los videos** muestra el listado completo, duración total acumulada y permite **borrar** videos o calibraciones erróneas.
 
 `YOUTUBE_API_KEY` (YouTube Data API v3, gratis) es opcional: sin ella se agregan los videos pero sin duración.
 
