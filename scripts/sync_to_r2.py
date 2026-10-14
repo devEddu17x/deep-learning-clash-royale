@@ -69,7 +69,8 @@ def download_and_upload(video_id: str, duration_s: int = None):
     with tempfile.TemporaryDirectory() as tmpdir:
         tmp_target = Path(tmpdir) / f"{video_id}.mp4"
         ydl_opts = {
-            'format': 'bestvideo[height<=1920]/best',
+            # Preferir AVC/h264 sobre AV1 para compatibilidad universal con OpenCV/FFmpeg
+            'format': 'bestvideo[ext=mp4][vcodec^=avc1][height<=1920]/bestvideo[height<=1920]/best',
             'outtmpl': str(tmp_target),
             'concurrent_fragment_downloads': 8,
             'quiet': True
