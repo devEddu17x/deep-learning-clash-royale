@@ -3,51 +3,324 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>CR Annotator · calibración de regiones</title>
+<title>CR Annotator · Revisión de videos</title>
 <style>
-  :root { color-scheme: dark; --video:#38bdf8; --arena:#facc15; }
+  :root {
+    color-scheme: dark;
+    --bg: #0f1115;
+    --panel: #171a21;
+    --border: #2a2f3a;
+    --text: #e5e7eb;
+    --muted: #9aa3b2;
+    --accent: #38bdf8;
+    --green: #22c55e;
+    --green-bg: #15803d;
+    --red: #ef4444;
+    --red-bg: #b91c1c;
+  }
   * { box-sizing: border-box; }
-  body { margin:0; font:14px system-ui, sans-serif; background:#0f1115; color:#e5e7eb; height:100dvh; display:grid; grid-template-rows:auto 1fr; }
-  header { display:flex; gap:12px; align-items:center; padding:8px 14px; background:#171a21; border-bottom:1px solid #2a2f3a; flex-wrap:wrap; }
-  header input { background:#0f1115; border:1px solid #2a2f3a; color:inherit; padding:6px 8px; border-radius:6px; width:130px; }
-  #stats { margin-left:auto; color:#9aa3b2; }
-  main { display:grid; grid-template-columns:1fr 320px; min-height:0; }
-  #stageWrap { display:grid; place-items:center; padding:12px; min-height:0; min-width:0; }
-  #stage { position:relative; aspect-ratio:16/9; width:min(100%, calc((100dvh - 90px) * 16 / 9)); background:#000; user-select:none; }
-  #stage iframe { position:absolute; inset:0; width:100%; height:100%; border:0; }
-  #overlay { position:absolute; inset:0; pointer-events:none; touch-action:none; }
-  #stage.drawing #overlay { pointer-events:auto; cursor:crosshair; outline:3px solid var(--arena); outline-offset:-3px; }
-  .box { position:absolute; border:2px solid; pointer-events:none; }
-  .box span { position:absolute; top:-18px; left:-2px; font:11px/1 system-ui; padding:2px 4px; color:#000; }
-  #bGame { border-color:var(--arena); } #bGame span { background:var(--arena); }
-  aside { padding:14px; border-left:1px solid #2a2f3a; overflow:auto; display:flex; flex-direction:column; gap:12px; }
-  button { background:#262b36; color:inherit; border:1px solid #343b4a; padding:8px 10px; border-radius:6px; cursor:pointer; }
-  button:hover:not(:disabled) { background:#2f3644; } button:disabled { opacity:.4; cursor:not-allowed; }
-  button.primary { background:#2563eb; border-color:#3b82f6; } button.danger { background:#7f1d1d; border-color:#b91c1c; }
-  .row { display:flex; gap:6px; flex-wrap:wrap; }
-  textarea { width:100%; background:#0f1115; color:inherit; border:1px solid #2a2f3a; border-radius:6px; padding:6px; resize:vertical; }
-  small, .muted { color:#9aa3b2; line-height:1.4; } kbd { background:#262b36; padding:1px 5px; border-radius:4px; }
-  #msg { min-height:1.3em; } .err { color:#f87171; } .ok { color:#4ade80; }
-  #meta a { color:#7dd3fc; }
-  dialog { background:#171a21; color:inherit; border:1px solid #2a2f3a; border-radius:10px; }
-  table { width:100%; border-collapse:collapse; } th, td { text-align:left; padding:5px 8px; border-bottom:1px solid #2a2f3a; }
-  td a { color:#7dd3fc; } .st-pending { color:#9aa3b2; } .st-claimed { color:#facc15; } .st-done { color:#4ade80; } .st-rejected { color:#f87171; }
-  dialog::backdrop { background:#0008; }
+  body {
+    margin: 0;
+    font: 14px system-ui, -apple-system, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    height: 100dvh;
+    display: grid;
+    grid-template-rows: auto 1fr;
+    overflow: hidden;
+  }
+  header {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    padding: 10px 16px;
+    background: var(--panel);
+    border-bottom: 1px solid var(--border);
+    flex-wrap: wrap;
+  }
+  header label {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 13px;
+    color: var(--muted);
+  }
+  header input {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    color: inherit;
+    padding: 6px 10px;
+    border-radius: 6px;
+    width: 130px;
+    font-size: 13px;
+  }
+  #stats { margin-left: auto; color: var(--muted); font-size: 13px; }
+  main {
+    display: grid;
+    grid-template-columns: 1fr 340px;
+    min-height: 0;
+    height: 100%;
+  }
+  #stageWrap {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 16px;
+    min-height: 0;
+    min-width: 0;
+    background: #000;
+  }
+  #stage {
+    position: relative;
+    aspect-ratio: 16/9;
+    width: min(100%, calc((100dvh - 110px) * 16 / 9));
+    background: #000;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+  }
+  #stage iframe {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    border: 0;
+  }
+  aside {
+    padding: 16px;
+    border-left: 1px solid var(--border);
+    background: var(--panel);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+  .card {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 14px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  button {
+    background: #262b36;
+    color: inherit;
+    border: 1px solid #343b4a;
+    padding: 8px 12px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 13px;
+    font-weight: 500;
+    transition: background 0.15s, border-color 0.15s, opacity 0.15s;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+  }
+  button:hover:not(:disabled) { background: #2f3644; }
+  button:disabled { opacity: 0.45; cursor: not-allowed; }
+  button.primary { background: #2563eb; border-color: #3b82f6; }
+  button.primary:hover:not(:disabled) { background: #1d4ed8; }
+  button.success { background: var(--green-bg); border-color: var(--green); color: #fff; font-weight: 600; }
+  button.success:hover:not(:disabled) { background: #16a34a; }
+  button.danger { background: var(--red-bg); border-color: var(--red); color: #fff; }
+  button.danger:hover:not(:disabled) { background: #dc2626; }
+  button.btn-chip {
+    padding: 4px 8px;
+    font-size: 12px;
+    background: #1e2430;
+    border-color: #343b4a;
+    border-radius: 12px;
+  }
+  button.btn-chip:hover { background: #2c3444; border-color: var(--accent); }
+  .row { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+  textarea {
+    width: 100%;
+    background: var(--bg);
+    color: inherit;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 8px;
+    font-family: inherit;
+    font-size: 13px;
+    resize: vertical;
+  }
+  textarea:focus, input:focus {
+    outline: none;
+    border-color: var(--accent);
+  }
+  small, .muted { color: var(--muted); line-height: 1.4; }
+  #msg { min-height: 1.3em; font-size: 13px; }
+  .err { color: #f87171; }
+  .ok { color: #4ade80; }
+  #meta a { color: var(--accent); text-decoration: none; }
+  #meta a:hover { text-decoration: underline; }
+  
+  /* Cola de videos pendientes */
+  #queueSection {
+    flex: 1;
+    min-height: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  #queueHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 13px;
+    font-weight: 600;
+  }
+  #queueList {
+    flex: 1;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    padding-right: 4px;
+  }
+  .queue-item {
+    padding: 8px 10px;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    font-size: 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+  }
+  .queue-item.active {
+    border-color: var(--accent);
+    background: #102131;
+  }
+  .queue-item .title {
+    font-weight: 500;
+    color: #f1f5f9;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .queue-item .meta-line {
+    display: flex;
+    justify-content: space-between;
+    color: var(--muted);
+    font-size: 11px;
+  }
+  .badge-active {
+    background: var(--accent);
+    color: #000;
+    font-weight: bold;
+    padding: 1px 5px;
+    border-radius: 4px;
+    font-size: 10px;
+  }
+
+  /* Diálogos */
+  dialog {
+    background: var(--panel);
+    color: inherit;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 18px;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.6);
+  }
+  dialog::backdrop { background: rgba(0, 0, 0, 0.7); backdrop-filter: blur(2px); }
+  table { width: 100%; border-collapse: collapse; }
+  th, td { text-align: left; padding: 6px 10px; border-bottom: 1px solid var(--border); font-size: 13px; }
+  td a { color: var(--accent); text-decoration: none; }
+  .st-pending { color: var(--muted); }
+  .st-claimed { color: #facc15; }
+  .st-done { color: #4ade80; }
+  .st-rejected { color: #f87171; }
 </style>
 </head>
 <body>
 <header>
   <strong>CR Annotator</strong>
-  <label>Tu nombre <input id="name" placeholder="ej. ana" autocomplete="off"></label>
+  <label>Tu nombre: <input id="name" placeholder="ej. ana" autocomplete="off"></label>
   <button id="next" class="primary">Siguiente video</button>
   <button id="addBtn">+ Agregar URLs</button>
-  <button id="listBtn">Videos</button>
+  <button id="listBtn">Todos los videos</button>
   <span id="stats"></span>
 </header>
+
+<main>
+  <div id="stageWrap">
+    <div id="empty" class="muted" style="text-align:center; padding: 40px;">
+      <h3 style="margin-top:0; color:#fff">Cargando cola de videos...</h3>
+      <p>Ingresa tu nombre arriba si aún no lo has hecho.</p>
+    </div>
+    <div id="stage" hidden>
+      <iframe id="player" title="Video de YouTube" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; fullscreen" allowfullscreen referrerpolicy="strict-origin-when-cross-origin"></iframe>
+    </div>
+  </div>
+
+  <aside>
+    <!-- Acciones del video activo -->
+    <div class="card">
+      <div id="meta" class="muted">
+        <span style="font-size: 12px">Ningún video seleccionado</span>
+      </div>
+      
+      <button id="acceptBtn" class="success" disabled style="padding: 12px; font-size: 14px;">
+        ✔ Aceptar video (Pantalla completa)
+      </button>
+
+      <button id="rejectBtn" class="danger" disabled>
+        ✖ Rechazar video...
+      </button>
+
+      <textarea id="notes" rows="2" placeholder="Notas (opcional): ej. iPad, vertical, etc."></textarea>
+      
+      <div id="msg" role="status"></div>
+    </div>
+
+    <!-- Cola de pendientes -->
+    <div id="queueSection">
+      <div id="queueHeader">
+        <span>Videos pendientes (<span id="pendingCount">0</span>)</span>
+        <button id="refreshQueue" style="padding: 2px 6px; font-size: 11px;">🔄 Refrescar</button>
+      </div>
+      <div id="queueList">
+        <div class="muted" style="text-align: center; padding: 16px; font-size: 12px;">Cargando lista...</div>
+      </div>
+    </div>
+  </aside>
+</main>
+
+<!-- Modal: Rechazar video -->
+<dialog id="rejectDlg" style="width: min(460px, 92vw)">
+  <form method="dialog" id="rejectForm">
+    <h3 style="margin-top: 0; color: #f87171;">Rechazar video</h3>
+    <p id="rejectVideoTitle" class="muted" style="margin: 4px 0 12px; font-size: 13px;"></p>
+    
+    <label style="display:block; margin-bottom: 6px; font-size: 12px; color: var(--muted);">Motivos frecuentes (haz clic para seleccionar):</label>
+    <div class="row" style="margin-bottom: 12px;">
+      <button type="button" class="btn-chip" data-reason="Hay youtuber / overlay">Hay youtuber / overlay</button>
+      <button type="button" class="btn-chip" data-reason="Con cortes o ediciones">Con cortes o ediciones</button>
+      <button type="button" class="btn-chip" data-reason="Resolución muy baja">Resolución muy baja</button>
+      <button type="button" class="btn-chip" data-reason="No es 1v1 normal">No es 1v1 normal</button>
+      <button type="button" class="btn-chip" data-reason="No se ve la partida">No se ve la partida</button>
+    </div>
+
+    <label style="display:block; margin-bottom: 6px; font-size: 12px; color: var(--muted);">Motivo (opcional):</label>
+    <textarea id="rejectReason" rows="3" placeholder="Escribe el motivo o déjalo vacío..."></textarea>
+
+    <div class="row" style="justify-content: flex-end; margin-top: 14px;">
+      <button type="button" id="rejectCancel">Cancelar</button>
+      <button type="submit" id="rejectConfirm" class="danger">Confirmar rechazo</button>
+    </div>
+  </form>
+</dialog>
+
+<!-- Modal: Agregar videos -->
 <dialog id="addDlg">
   <form method="dialog">
     <h3 style="margin-top:0">Agregar videos</h3>
-    <p class="muted">Pega una o varias URLs (una por línea). Quedan pendientes para etiquetar.</p>
+    <p class="muted">Pega una o varias URLs de YouTube (una por línea). Quedan pendientes para etiquetar.</p>
     <textarea id="urls" rows="8" style="width:420px;max-width:80vw" placeholder="https://youtu.be/...&#10;https://www.youtube.com/watch?v=..."></textarea>
     <div id="addMsg" class="muted" style="margin:8px 0;min-height:1.3em" role="status"></div>
     <div class="row" style="justify-content:flex-end">
@@ -56,6 +329,8 @@
     </div>
   </form>
 </dialog>
+
+<!-- Modal: Listado completo -->
 <dialog id="listDlg" style="width:min(960px,95vw)">
   <div class="row" style="justify-content:space-between;align-items:center">
     <h3 style="margin:0">Videos agregados</h3>
@@ -66,93 +341,98 @@
     <table id="vtable"><thead><tr><th>Título</th><th>Estado</th><th>Duración</th><th>Agregó</th><th></th></tr></thead><tbody></tbody></table>
   </div>
 </dialog>
-<main>
-  <div id="stageWrap">
-    <p id="empty" class="muted">Escribe tu nombre y pulsa «Siguiente video».</p>
-    <div id="stage" hidden>
-      <iframe id="player" title="Video de YouTube" allow="encrypted-media; picture-in-picture; fullscreen" allowfullscreen referrerpolicy="strict-origin-when-cross-origin"></iframe>
-      <div id="overlay">
-        <div class="box" id="bGame"><span>PANTALLA DEL JUEGO</span></div>
-      </div>
-    </div>
-  </div>
-  <aside>
-    <div id="meta" class="muted"></div>
-    <button id="saveFull" class="primary" disabled>✔ Todo el video es la partida</button>
-    <small>Úsalo si el video es solo la pantalla del juego (lo habitual). No hay que dibujar nada.</small>
-    <hr style="width:100%;border:0;border-top:1px solid #2a2f3a">
-    <button id="drawToggle" aria-pressed="false" disabled>✏️ Marcar pantalla del juego (D)</button>
-    <small>
-      Solo si el video trae algo más (barras, otra proporción, cámara): pausa en una partida en curso, pulsa <kbd>D</kbd> y
-      dibuja <b style="color:var(--arena)">una</b> caja que cubra la pantalla completa del juego, del reloj superior a las cartas.
-      Después, «Guardar caja».
-    </small>
-    <textarea id="notes" rows="2" placeholder="Notas (opcional): iPad, vertical, etc."></textarea>
-    <div class="row">
-      <button id="save" disabled>Guardar caja</button>
-      <button id="reject" class="danger" disabled>Rechazar video</button>
-    </div>
-    <div id="msg" role="status"></div>
-  </aside>
-</main>
 
 <script>
 const $ = (id) => document.getElementById(id);
-const REJECT_REASONS = ['Hay youtuber/overlay', 'Con cortes o ediciones', 'Resolución muy baja',
-                        'No es 1v1 normal', 'No se ve la partida', 'Otro'];
-let video = null, drawing = false, gameBox = null;
+let currentVideo = null;
 
+// Persistencia del nombre del anotador
 $('name').value = localStorage.getItem('annotator') ?? '';
-$('name').addEventListener('change', () => localStorage.setItem('annotator', $('name').value.trim()));
+$('name').addEventListener('input', () => {
+  localStorage.setItem('annotator', $('name').value.trim());
+});
+$('name').addEventListener('change', () => {
+  const val = $('name').value.trim();
+  localStorage.setItem('annotator', val);
+  if (val && !currentVideo) next();
+});
+$('name').addEventListener('keydown', (e) => {
+  if (e.key === 'Enter') {
+    e.preventDefault();
+    const val = $('name').value.trim();
+    if (val && !currentVideo) next();
+    $('name').blur();
+  }
+});
 
 const say = (t, cls = '') => { $('msg').textContent = t; $('msg').className = cls; };
 const api = async (path, body) => {
-  const r = await fetch(path, { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify(body) });
+  const r = await fetch(path, {
+    method: 'POST',
+    headers: { 'content-type': 'application/json' },
+    body: JSON.stringify(body)
+  });
   const data = await r.json().catch(() => ({}));
   if (!r.ok) throw new Error(data.error ?? r.statusText);
   return data;
 };
 
-function paint() {
-  const el = $('bGame');
-  el.hidden = !gameBox;
-  if (gameBox) Object.assign(el.style, { left: gameBox.x * 100 + '%', top: gameBox.y * 100 + '%', width: gameBox.w * 100 + '%', height: gameBox.h * 100 + '%' });
-  $('save').disabled = !(video && gameBox && gameBox.w > 0.05 && gameBox.h > 0.05);
-}
-
-function setDrawing(on) {
-  drawing = on;
-  $('stage').classList.toggle('drawing', on);
-  $('drawToggle').setAttribute('aria-pressed', on);
-  $('drawToggle').textContent = on ? '▶ Volver al reproductor (D)' : '✏️ Marcar pantalla del juego (D)';
-}
-$('drawToggle').onclick = () => setDrawing(!drawing);
+const fmtDur = (sec) => {
+  if (!sec) return '—';
+  const h = Math.floor(sec / 3600), m = Math.round(sec % 3600 / 60);
+  return h ? `${h} h ${m} min` : `${m} min`;
+};
+const fmtVid = (s) => s == null ? '—' : `${Math.floor(s / 60)}:${String(s % 60).padStart(2, '0')}`;
 
 function showVideo(v) {
-  video = v;
-  $('empty').hidden = true; $('stage').hidden = false;
-  $('meta').innerHTML = `<b>${v.title ?? v.id}</b><br><a href="${v.url}" target="_blank" rel="noopener">abrir en YouTube ↗</a>` +
-    (v.duration_s ? `<br>${Math.round(v.duration_s / 60)} min` : '');
-  $('player').src = `https://www.youtube-nocookie.com/embed/${v.id}?rel=0&playsinline=1`;
-  gameBox = null; setDrawing(false); paint();
-  $('saveFull').disabled = $('drawToggle').disabled = $('reject').disabled = false; $('notes').value = '';
+  currentVideo = v;
+  $('empty').hidden = true;
+  $('stage').hidden = false;
+  $('meta').innerHTML = `
+    <div style="font-weight:600; color:#f1f5f9; margin-bottom:4px; font-size:13px; line-height:1.3;">
+      ${v.title ?? v.id}
+    </div>
+    <div style="font-size:12px; display:flex; justify-content:space-between;">
+      <a href="${v.url}" target="_blank" rel="noopener">Abrir en YouTube ↗</a>
+      <span>${v.duration_s ? fmtDur(v.duration_s) : 'Duración desc.'}</span>
+    </div>
+  `;
+  $('player').src = `https://www.youtube-nocookie.com/embed/${v.id}?rel=0&playsinline=1&autoplay=1`;
+  $('acceptBtn').disabled = false;
+  $('rejectBtn').disabled = false;
+  $('notes').value = '';
 }
 
 async function next() {
   const annotator = $('name').value.trim();
-  if (!annotator) return say('Escribe tu nombre primero.', 'err');
+  if (!annotator) {
+    $('empty').hidden = false;
+    $('stage').hidden = true;
+    $('empty').innerHTML = `<h3 style="margin-top:0; color:#facc15">Nombre requerido</h3><p>Ingresa tu nombre arriba para cargar o reclamar el siguiente video.</p>`;
+    return say('Escribe tu nombre primero.', 'err');
+  }
   localStorage.setItem('annotator', annotator);
+  say('Cargando video...', 'muted');
+
   try {
     const v = await api('/api/next', { annotator });
     if (v.empty) {
-      video = null; $('stage').hidden = true; $('empty').hidden = false;
-      $('empty').textContent = 'No quedan videos pendientes. 🎉';
-      $('save').disabled = $('saveFull').disabled = $('drawToggle').disabled = $('reject').disabled = true;
-      return say('');
+      currentVideo = null;
+      $('stage').hidden = true;
+      $('empty').hidden = false;
+      $('empty').innerHTML = `<h3 style="margin-top:0; color:#4ade80">¡Todo al día!</h3><p>No quedan videos pendientes por revisar.</p>`;
+      $('acceptBtn').disabled = true;
+      $('rejectBtn').disabled = true;
+      say('');
+    } else {
+      showVideo(v);
+      say('');
     }
-    showVideo(v); say('');
-  } catch (e) { say(e.message, 'err'); }
+  } catch (e) {
+    say(e.message, 'err');
+  }
   stats();
+  loadPendingQueue();
 }
 
 async function stats() {
@@ -162,98 +442,201 @@ async function stats() {
   } catch {}
 }
 
-$('next').onclick = next;
+async function loadPendingQueue() {
+  try {
+    const { videos } = await (await fetch('/api/videos')).json();
+    const pendings = videos.filter((v) => v.status === 'pending' || (v.status === 'claimed' && v.claimed_by === $('name').value.trim()));
+    $('pendingCount').textContent = pendings.length;
 
-const fmtDur = (sec) => { const h = Math.floor(sec / 3600), m = Math.round(sec % 3600 / 60); return h ? `${h} h ${m} min` : `${m} min`; };
-const fmtVid = (s) => s == null ? '—' : `${Math.floor(s / 60)}:${String(s % 60).padStart(2, '0')}`;
+    const listEl = $('queueList');
+    if (!pendings.length) {
+      listEl.innerHTML = `<div class="muted" style="text-align: center; padding: 16px; font-size: 12px;">Sin videos pendientes</div>`;
+      return;
+    }
 
+    listEl.replaceChildren(...pendings.map((v) => {
+      const item = document.createElement('div');
+      const isCurrent = currentVideo && currentVideo.id === v.id;
+      item.className = 'queue-item' + (isCurrent ? ' active' : '');
+      item.innerHTML = `
+        <div class="title" title="${v.title ?? v.id}">${v.title ?? v.id}</div>
+        <div class="meta-line">
+          <span>${fmtDur(v.duration_s)}</span>
+          ${isCurrent ? '<span class="badge-active">▶ EN REVISIÓN</span>' : (v.added_by ? `<span>por ${v.added_by}</span>` : '')}
+        </div>
+      `;
+      return item;
+    }));
+  } catch (e) {
+    console.error('Error cargando cola:', e);
+  }
+}
+
+// Aceptar video (Pantalla completa / game_full=1)
+$('acceptBtn').onclick = async () => {
+  if (!currentVideo) return;
+  const annotator = $('name').value.trim();
+  if (!annotator) return say('Escribe tu nombre primero.', 'err');
+
+  $('acceptBtn').disabled = true;
+  $('rejectBtn').disabled = true;
+  say('Guardando calibración...', 'muted');
+
+  try {
+    await api('/api/submit', {
+      video_id: currentVideo.id,
+      annotator,
+      game_full: true,
+      notes: $('notes').value.trim() || undefined
+    });
+    say('Aceptado ✔', 'ok');
+    next();
+  } catch (e) {
+    say(e.message, 'err');
+    $('acceptBtn').disabled = false;
+    $('rejectBtn').disabled = false;
+  }
+};
+
+// Modal de Rechazar video
+$('rejectBtn').onclick = () => {
+  if (!currentVideo) return;
+  $('rejectVideoTitle').textContent = `Video: ${currentVideo.title ?? currentVideo.id}`;
+  $('rejectReason').value = '';
+  $('rejectDlg').showModal();
+};
+
+$('rejectCancel').onclick = () => $('rejectDlg').close();
+
+document.querySelectorAll('.btn-chip').forEach((btn) => {
+  btn.onclick = () => {
+    const reason = btn.dataset.reason;
+    const cur = $('rejectReason').value.trim();
+    $('rejectReason').value = cur ? `${cur}, ${reason}` : reason;
+  };
+});
+
+$('rejectForm').onsubmit = async (e) => {
+  e.preventDefault();
+  if (!currentVideo) return;
+  const annotator = $('name').value.trim();
+  const reason = $('rejectReason').value.trim() || 'Rechazado';
+
+  $('rejectDlg').close();
+  $('acceptBtn').disabled = true;
+  $('rejectBtn').disabled = true;
+  say('Rechazando video...', 'muted');
+
+  try {
+    await api('/api/submit', {
+      video_id: currentVideo.id,
+      annotator,
+      reject: reason
+    });
+    say('Video rechazado ✖', 'ok');
+    next();
+  } catch (e) {
+    say(e.message, 'err');
+    $('acceptBtn').disabled = false;
+    $('rejectBtn').disabled = false;
+  }
+};
+
+// Modal de lista general y borrado
 async function loadList() {
   const { videos, totals } = await (await fetch('/api/videos')).json();
-  const all = totals.reduce((a, t) => a + t.duration_s, 0), n = totals.reduce((a, t) => a + t.n, 0);
+  const all = totals.reduce((a, t) => a + t.duration_s, 0);
+  const n = totals.reduce((a, t) => a + t.n, 0);
   const missing = totals.reduce((a, t) => a + (t.without_duration ?? 0), 0);
   const done = totals.find((t) => t.status === 'done')?.duration_s ?? 0;
   $('totals').textContent = `${n} videos · ${fmtDur(all)} en total · ${fmtDur(done)} ya etiquetados` +
     (missing ? ` · ${missing} sin duración` : '');
+  
   $('vtable').tBodies[0].replaceChildren(...videos.map((v) => {
     const tr = document.createElement('tr');
-    const a = Object.assign(document.createElement('a'), { href: v.url, target: '_blank', rel: 'noopener', textContent: v.title ?? v.id });
-    const td = (...kids) => { const c = document.createElement('td'); c.append(...kids); tr.append(c); return c; };
+    const a = Object.assign(document.createElement('a'), {
+      href: v.url, target: '_blank', rel: 'noopener', textContent: v.title ?? v.id
+    });
+    const td = (...kids) => {
+      const c = document.createElement('td');
+      c.append(...kids);
+      tr.append(c);
+      return c;
+    };
     td(a);
-    td(Object.assign(document.createElement('span'), { className: 'st-' + v.status, textContent: v.status + (v.claimed_by && v.status === 'claimed' ? ` (${v.claimed_by})` : ''), title: v.reject_reason ?? '' }));
-    td(fmtVid(v.duration_s)); td(v.added_by ?? '');
+    td(Object.assign(document.createElement('span'), {
+      className: 'st-' + v.status,
+      textContent: v.status + (v.claimed_by && v.status === 'claimed' ? ` (${v.claimed_by})` : ''),
+      title: v.reject_reason ?? ''
+    }));
+    td(fmtVid(v.duration_s));
+    td(v.added_by ?? '');
+    
     const del = Object.assign(document.createElement('button'), { textContent: 'Borrar', className: 'danger' });
+    del.style.padding = '4px 8px';
+    del.style.fontSize = '12px';
     del.onclick = async () => {
       if (!confirm(`¿Borrar «${v.title ?? v.id}»${v.status === 'done' ? ' y su calibración' : ''}?`)) return;
       const r = await fetch('/api/videos/' + v.id, { method: 'DELETE' });
-      if (r.ok) { loadList(); stats(); } else alert((await r.json()).error);
+      if (r.ok) { loadList(); stats(); loadPendingQueue(); } else alert((await r.json()).error);
     };
     td(del);
     return tr;
   }));
 }
+
 $('listBtn').onclick = () => { $('listDlg').showModal(); loadList(); };
 $('listClose').onclick = () => $('listDlg').close();
 
+// Modal de agregar URLs
 $('addBtn').onclick = () => {
   if (!$('name').value.trim()) return say('Escribe tu nombre primero.', 'err');
-  $('addMsg').textContent = ''; $('addDlg').showModal(); $('urls').focus();
+  $('addMsg').textContent = '';
+  $('addDlg').showModal();
+  $('urls').focus();
 };
+
 $('addGo').onclick = async () => {
-  const msg = $('addMsg'); msg.className = 'muted'; msg.textContent = 'Agregando…';
+  const msg = $('addMsg');
+  msg.className = 'muted';
+  msg.textContent = 'Agregando…';
   try {
     const r = await api('/api/add', { added_by: $('name').value.trim(), urls: $('urls').value });
     msg.className = r.invalid.length ? 'err' : 'ok';
     msg.textContent = `${r.added.length} agregados · ${r.duplicated.length} ya existían` +
       (r.invalid.length ? ` · ${r.invalid.length} inválidos: ${r.invalid.slice(0, 3).join(', ')}` : '');
-    if (r.added.length) $('urls').value = ''; stats();
+    if (r.added.length) {
+      $('urls').value = '';
+      stats();
+      loadPendingQueue();
+    }
     if ($('listDlg').open) loadList();
-  } catch (e) { msg.className = 'err'; msg.textContent = e.message; }
-};
-const submitCalibration = async (payload) => {
-  try {
-    await api('/api/submit', { video_id: video.id, annotator: $('name').value.trim(),
-      notes: $('notes').value.trim() || undefined, ...payload });
-    say('Guardado ✔', 'ok'); next();
-  } catch (e) { say(e.message, 'err'); }
-};
-$('saveFull').onclick = () => submitCalibration({ game_full: true });
-$('save').onclick = () => submitCalibration({ game_box: gameBox });
-$('reject').onclick = async () => {
-  const pick = prompt('Motivo del rechazo:\n' + REJECT_REASONS.map((r, i) => `${i + 1}. ${r}`).join('\n'), '1');
-  if (!pick) return;
-  const reason = REJECT_REASONS[+pick - 1] ?? pick;
-  try {
-    await api('/api/submit', { video_id: video.id, annotator: $('name').value.trim(), reject: reason });
-    say('Rechazado', 'ok'); next();
-  } catch (e) { say(e.message, 'err'); }
+  } catch (e) {
+    msg.className = 'err';
+    msg.textContent = e.message;
+  }
 };
 
-// Dibujo de cajas con pointer events (ratón, lápiz o táctil).
-const stage = $('overlay');
-let start = null;
-stage.addEventListener('pointerdown', (e) => {
-  const r = stage.getBoundingClientRect();
-  start = { x: (e.clientX - r.left) / r.width, y: (e.clientY - r.top) / r.height };
-  stage.setPointerCapture(e.pointerId);
-});
-stage.addEventListener('pointermove', (e) => {
-  if (!start) return;
-  const r = stage.getBoundingClientRect();
-  const cx = Math.min(1, Math.max(0, (e.clientX - r.left) / r.width));
-  const cy = Math.min(1, Math.max(0, (e.clientY - r.top) / r.height));
-  gameBox = { x: Math.min(start.x, cx), y: Math.min(start.y, cy), w: Math.abs(cx - start.x), h: Math.abs(cy - start.y) };
-  paint();
-});
-stage.addEventListener('pointerup', () => { start = null; });
+$('next').onclick = next;
+$('refreshQueue').onclick = () => { loadPendingQueue(); stats(); };
 
+// Atajos de teclado útiles
 document.addEventListener('keydown', (e) => {
   if (e.target.matches('input, textarea')) return;
-  if (e.key.toLowerCase() === 'd' && video) setDrawing(!drawing);
-  else if (e.key === 'Enter' && !$('save').disabled) $('save').click();
+  if (e.key === 'Enter' && (e.ctrlKey || e.metaKey) && !$('acceptBtn').disabled) {
+    e.preventDefault();
+    $('acceptBtn').click();
+  }
 });
 
-stats();
+// Inicialización automática
+window.addEventListener('DOMContentLoaded', () => {
+  stats();
+  loadPendingQueue();
+  if ($('name').value.trim()) {
+    next();
+  }
+});
 </script>
 </body>
 </html>
-
