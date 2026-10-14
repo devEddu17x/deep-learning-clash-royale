@@ -58,25 +58,28 @@ Existen dos tipos de desenlace:
 
 ---
 
-## 3. Arquitectura del Pipeline en el Notebook (`01-generate-dataset.ipynb`)
+## 3. Arquitectura del Pipeline en el Notebook (`01-segmentation.ipynb`)
 
-El procesamiento se divide en dos fases modulares:
+El procesamiento se divide en dos fases modulares y celdas secuenciales limpias:
 
-1. **Fase 1: Calibración y Anclaje Inmutable Universal (`c_fase1_detection`)**
+1. **Fase 1: Calibración y Anclaje Inmutable Universal (`c_fase1_algorithms`)**
    - Evalúa los primeros segundos (hasta 60s muestreando cada 2s) sobre todo el **cuadrante superior derecho amplio** (`y: [0, 35%]`, `x: [50%, 100%]`), garantizando compatibilidad total con cualquier dispositivo (iPhone con notch o isla dinámica, Android 16:9, 20:9 o tablets 4:3):
      - **Estrategia 1 (Cluster de Dígitos Rápido, ~5ms):** Agrupa píxeles brillantes o rojos del reloj y valida con OCR la sub-caja recortada.
      - **Estrategia 2 (OCR Completo del Cuadrante con Extracción de Bounding Box):** Si el cluster morfológico no confirma, EasyOCR procesa todo el cuadrante y extrae directamente el polígono/bounding box exacto de cualquier texto con formato de tiempo `M:SS` o cartel `Time left:`. Inmune a contrastes difíciles, fondos oscuros o barras de estado atípicas.
    - Tan pronto como se detecta una lectura válida, esas coordenadas se expanden con márgenes canónicos y quedan **bloqueadas de manera inmutable** para todo el video.
-   - **Galería Visual Fase 1 (`c_fase1_gallery`):** Grilla con el fotograma completo marcado con el recuadro verde, el zoom del reloj y el método de detección empleado (`fast_cluster` o `quadrant_ocr`).
 
-2. **Fase 2: Segmentación Continua a 1 FPS (`c_fase2_segmentation`)**
+2. **Fase 2: Segmentación Continua a 1 FPS (`c_fase2_algorithms`)**
    - Escanea el video a 1 frame por segundo leyendo exclusivamente en la ROI anclada, sin límite de duración (`max_seconds = None`), con log de progreso en tiempo real (`flush=True`) cada 5 minutos.
-   - **Separación de partidas en cortes rápidos de edición:** Si el reloj salta de nuevo a tiempo inicial ($\ge 2:20$) tras haber jugado al menos 40s, se activa la verificación por *lookahead*.
+   - **Separación de partidas en cortes rápidos de edición:** Si el reloj salta de nuevo a tiempo inicial ($\ge 2:20$) tras haber jugado al menos 40s, se activa la verificación por *lookahead* (`is_confirmed_new_match`).
    - **Anti-Glitch por Lookahead:** Se verifica que las lecturas inmediatamente posteriores confirmen una cuenta regresiva coherente ($\ge 130\text{s}$). Si se confirma, la partida previa se cierra en su meseta y la nueva arranca; si es un fotograma anómalo aislado, se ignora como ruido de OCR.
    - Une tiempo regular con Overtime.
    - Aplica la detección de meseta congelada para encontrar el segundo exacto de la caída de torre.
    - Salida formateada en `MM:SS` con links directos clickeables a YouTube (`https://youtu.be/<id>?t=<segundos>`).
-   - **Galería Visual Fase 2 (`c_fase2_gallery`):** Muestra lado a lado el fotograma exacto de inicio vs el fotograma exacto de fin de cada clip.
+
+3. **Ejecución y Galerías Visuales (`c_pipeline_execution`, `c_fase1_gallery`, `c_fase2_gallery`)**
+   - Bucle video por video tolerante a fallos con guardado atómico en R2.
+   - **Galería Visual Fase 1 (`c_fase1_gallery`):** Grilla con el fotograma completo marcado con el recuadro verde, el zoom del reloj y el método de detección empleado (`fast_cluster` o `quadrant_ocr`).
+   - **Galería Visual Fase 2 (`c_fase2_gallery`):** Muestra lado a lado el fotograma exacto de inicio vs el fotograma exacto de fin de cada clip desde miniaturas en memoria.
 
 ---
 
