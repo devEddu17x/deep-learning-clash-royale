@@ -1,6 +1,6 @@
 # CR Annotator
 
-Herramienta aislada (sin notebooks ni descargas) para calibrar cada video: el equipo marca **dos cajas** sobre un frame y se guarda en Cloudflare D1. Es lo único que se hace a mano antes del pipeline.
+Herramienta aislada (sin notebooks ni descargas) para calibrar cada video: el equipo marca **una sola caja** (`game_box`) si tiene marcos o indica que **todo el frame es partida** (`game_full=1`), guardándose en Cloudflare D1. Es lo único que se hace a mano antes del pipeline.
 
 - Cloudflare Pages: `public/` (interfaz) + `functions/api/*` (API)
 - Cloudflare D1: cola de videos y calibraciones
