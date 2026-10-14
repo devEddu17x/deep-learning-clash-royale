@@ -43,7 +43,7 @@ Detalles en `docs/project-idea.md`.
 - Bucket R2: `cr-videos` en Cloudflare.
 - **Subdominio público CDN:** `https://cdn-cr.eddux.dev`.
 - Ruta pública de cada video: `https://cdn-cr.eddux.dev/videos/<video_id>.mp4`.
-- En Kaggle / notebooks se descarga directamente mediante HTTP desde este CDN, **sin necesitar credenciales de S3 ni interactuar con YouTube**.
+- En Kaggle / notebooks los videos `.mp4` se descargan directamente mediante HTTP desde este CDN, sin saturar YouTube.
 
 ### C. Sincronización Local a R2 (`scripts/sync_to_r2.py`)
 
@@ -63,13 +63,16 @@ Detalles en `docs/project-idea.md`.
   ```bash
   uv run scripts/sync_to_r2.py
   ```
-  El script consulta `/api/export`, muestra la duración de cada video, descarga a máxima calidad los videos que falten en R2, los sube y elimina el archivo temporal local.
+  El script consulta `/api/export`, muestra la duración de cada video, descarga a máxima calidad los videos que falten en R2 (forzando códec H.264 / AVC1), los sube y elimina el archivo temporal local.
 
-### D. Procesamiento en Notebook (`notebooks/01-generate-dataset.ipynb`)
+### D. Segmentación en Notebook (`notebooks/01-segmentation.ipynb`)
 
 - Se ejecuta en un kernel de **Kaggle** conectado por Jupyter Server a VS Code.
-- No descarga de YouTube (para evitar los bloqueos `Sign in to confirm you're not a bot` de las IPs de Google/Kaggle).
-- Descarga directo desde el CDN: `https://cdn-cr.eddux.dev/videos/<video_id>.mp4`.
+- Descarga los `.mp4` desde el CDN (`https://cdn-cr.eddux.dev/videos/<video_id>.mp4`).
+- Para la persistencia y lectura de metadatos, se conecta directamente a Cloudflare R2 vía la **API S3** (`boto3`), evitando inconsistencias por caché del CDN:
+  - Lee los videos ya procesados: `s3.list_objects_v2(Prefix='metadata/segments/')`.
+  - Checkpointing atómico por video: `metadata/segments/<video_id>.json`.
+  - Manifiesto global consolidado: `metadata/segmented_matches.json`.
 - **Nota técnica:** No se pueden editar archivos `.ipynb` directamente con `replace_file_content`; usar scripts Python/json o reescribir con `write_to_file`.
 
 ---
@@ -78,12 +81,12 @@ Detalles en `docs/project-idea.md`.
 
 - **Infraestructura de datos y sync a R2:** 100% completada y funcionando. Códec de descarga fijado a H.264/AVC1 en `scripts/sync_to_r2.py`.
 - **Paso 3 del plan (Segmentación de partidas por reloj en notebook):** **100% COMPLETADO Y VALIDADO**.
-  - Implementado en `notebooks/01-generate-dataset.ipynb` mediante un pipeline modular y resiliente:
+  - Implementado en `notebooks/01-segmentation.ipynb` mediante un pipeline modular y resiliente (10 celdas secuenciales, 0 variables huérfanas):
     - **Fase 1:** Anclaje inmutable universal de la caja en el cuadrante superior derecho amplio (independiente de aspect ratio y notch).
-    - **Fase 2:** Máquina de estados a 1 fps con anti-glitch por *lookahead*, unión con Overtime, separación en cortes rápidos de edición, fin exacto por meseta congelada de torre y salida en `MM:SS` con enlaces a YouTube.
-    - **Persistencia y Resiliencia en R2:** Pipeline incremental video por video. Guarda cada segmentación de forma atómica directo en Cloudflare R2 vía API S3 (`metadata/segments/<video_id>.json`), salta videos ya procesados (idempotencia) y limpia los `.mp4` locales para procesar 12h+ en Kaggle sin saturar disco. Compila el manifiesto consolidado `metadata/segmented_matches.json`.
+    - **Fase 2:** Máquina de estados a 1 fps con anti-glitch por *lookahead*, unión con Overtime, separación en cortes rápidos de edición, fin exacto por meseta congelada de torre y salida en `MM:SS` con enlaces directos a YouTube.
+    - **Persistencia y Resiliencia en R2:** Pipeline incremental video por video. Guarda cada segmentación de forma atómica directo en Cloudflare R2 vía API S3 (`metadata/segments/<video_id>.json`), salta videos ya procesados en 0s (idempotencia) y elimina los `.mp4` locales para procesar 12h+ en Kaggle sin riesgo de saturar disco ni perder datos. Compila el manifiesto consolidado `metadata/segmented_matches.json`.
   - Reglas visuales y detalles técnicos documentados a fondo en `docs/segmentation-spec.md`.
-- **Siguiente paso prioritario:** **Paso 4 del plan: Extracción de jugadas y construcción del dataset de pares (4 frames -> acción)**.
+- **Siguiente paso prioritario (ARRANQUE EN NUEVO CHAT):** **Paso 4 del plan: Extracción de jugadas y construcción del dataset de pares (4 frames -> acción)**.
   - Diseñar el detector de jugada: identificar en qué instante $t$ se suelta una carta a la arena (reducción de cartas en mano, caída del contador de elixir o aparición del sprite de la tropa).
   - Tomar el frame actual justo antes de colocar la carta ($t_{\text{jugada}} - 0.5\text{ a }1\text{ s}$) y los 3 frames previos ($-6\text{s}, -4\text{s}, -2\text{s}$).
   - Detectar qué carta se jugó y en qué cuadrícula de la arena se soltó (mapeo a lenguaje natural).
