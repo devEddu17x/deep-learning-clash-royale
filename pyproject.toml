@@ -1,0 +1,21 @@
+[project]
+name = "deep-learning-clash-royale"
+version = "0.1.0"
+description = "A deep learning project to support your Clash Royale matches"
+readme = "README.md"
+authors = [
+    { name = "eddu", email = "contact@eddux.dev" }
+]
+requires-python = ">=3.14"
+dependencies = [
+    "boto3>=1.43.111",
+    "requests>=2.34.2",
+    "yt-dlp>=2026.8.19",
+]
+
+[project.scripts]
+deep-learning-clash-royale = "deep_learning_clash_royale:main"
+
+[build-system]
+requires = ["uv_build>=0.12.24,<0.13.0"]
+build-backend = "uv_build"
