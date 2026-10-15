@@ -60,10 +60,12 @@ El proyecto está organizado en etapas secuenciales modulares:
 ├── docs/                          # Documentación técnica
 │   ├── project-idea.md            # Visión general y definición del problema
 │   ├── segmentation-spec.md       # Especificación del anclaje de reloj y máquina de estados
-│   └── ui-bounding-box-spec.md    # Especificación de calibración espacial y bounding boxes
+│   ├── ui-bounding-box-spec.md    # Especificación de calibración espacial y bounding boxes
+│   └── action-extraction-spec.md  # Especificación de extracción de jugadas y dataset
 ├── notebooks/                     # Procesamiento en Kaggle / Jupyter
 │   ├── 01-segmentation.ipynb      # Pipeline de segmentación con persistencia atómica en R2
-│   └── 02-ui-bounding-box.ipynb   # Calibración espacial de UI (slots, elixir, arena)
+│   ├── 02-ui-bounding-box.ipynb   # Calibración espacial de UI (slots, elixir, arena)
+│   └── 03-action-extraction.ipynb # Extracción de jugadas y pares VLM [EN PROGRESO]
 ├── scripts/                       # Herramientas de automatización local
 │   └── sync_to_r2.py              # Descarga de YouTube en H.264 y subida directa a R2
 ├── AGENTS.md                      # Contexto integral y reglas de desarrollo para agentes IA
