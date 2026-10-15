@@ -75,15 +75,19 @@ Detalles en `docs/project-idea.md`.
   - Manifiesto global consolidado: `metadata/segmented_matches.json`.
 - **Nota técnica:** No se pueden editar archivos `.ipynb` directamente con `replace_file_content`; usar scripts Python/json o reescribir con `write_to_file`.
 
-### E. Calibración Espacial de UI (`notebooks/02-ui-calibration.ipynb`)
+### E. Calibración Espacial de UI (`notebooks/02-ui-bounding-box.ipynb`)
 
 - Desacopla la calibración espacial de la extracción de jugadas (Principio de Responsabilidad Única).
 - Aprovecha los segmentos del Notebook 01 tomando un segundo seguro de gameplay confirmado ($t_{\text{start}} + 8\text{ s}$).
-- Algoritmo de calibración multi-dispositivo (16:9, notch / Dynamic Island, Android alto, tablets):
-  - Detecta el contenedor azul inferior (dock) y la barra de elixir filtrando la línea continua de magenta.
-  - Ancla con precisión matemática: arena jugable, dock, 4 slots de cartas (con margen superior de elevación para selección de carta con borde blanco brillante), próxima carta, botón de emote y área de drawer de emotes.
-  - Checkpointing atómico en R2 vía API S3: `metadata/layouts/<video_id>.json` y consolidado `metadata/ui_layouts.json`.
-  - Galería visual con recuadros de colores para inspección humana inmediata.
+- Algoritmo de calibración multi-dispositivo afinado y blindado (16:9 estándar, notch / Dynamic Island en iPhone, Android alto 20:9 y videos con bandas negras laterales):
+  - **Detección de pillarbox:** Detecta bandas negras laterales y recorta al lienzo de juego activo (`gw`, `gx_min`).
+  - **Anclaje infalible por pico de densidad magenta:** En lugar de umbrales estáticos que fallaban cuando el jugador tenía poco elixir (1 o 2), detecta el pico de magenta en el 15% inferior de la pantalla. Inmune al nivel de elixir y a los círculos de coste de las cartas.
+  - **Caja de elixir completa:** Abarca el número blanco superior (0–10), la gota de elixir y el texto `"Máx.: 10"`.
+  - **Anclaje canónico de cartas en mano:** Los 4 slots se posicionan estrictamente a partir de la barra de elixir con dimensiones proporcionales fijas ($0.180 W \times 0.240 W$). Incluyen holgura superior para elevación de carta cuando el jugador la selecciona con el borde blanco brillante, y base para el círculo de coste.
+  - **Cuadrícula jugable de la arena:** Delimitada desde justo debajo del HUD superior (cubriendo por completo las torres de princesas enemigas) hasta justo detrás de la base del rey propio (donde terminan los cuadrados de piedra), descartando la zona muerta decorativa de arbustos y tejados inferiores.
+  - **Oclusión de emotes:** Se descartó el recuadro naranja flotante. Cuando se abre el menú de chat, el panel azul con frases ("¡Buena suerte!", etc.) cubre el 100% de la mano y bloquea las jugadas; la oclusión se detectará directamente sobre los 4 slots de cartas en el Notebook 03.
+  - **Persistencia atómica:** Checkpointing en R2 vía API S3: `metadata/layouts/<video_id>.json` y consolidado `metadata/ui_layouts.json`.
+  - **Galería visual:** Grilla de verificación con cajas de colores (cian = arena, verde = 4 cartas, magenta = elixir, amarillo = siguiente, azul = emote) ejecutada y validada en Kaggle.
 
 ---
 
@@ -91,13 +95,13 @@ Detalles en `docs/project-idea.md`.
 
 - **Infraestructura de datos y sync a R2:** 100% completada y funcionando.
 - **Paso 3 del plan (Segmentación de partidas):** **100% COMPLETADO Y VALIDADO** en `notebooks/01-segmentation.ipynb`.
-- **Paso 4A (Calibración Espacial de UI):** **100% IMPLEMENTADO** en `notebooks/02-ui-calibration.ipynb`.
-- **Siguiente paso prioritario:** **Paso 4B: Extracción de jugadas y construcción del dataset (`notebooks/03-action-extraction.ipynb`)**.
-  - Consume los segmentos de `metadata/segmented_matches.json` y las zonas espaciales fijas de `metadata/ui_layouts.json`.
-  - Monitorear el gameplay en las ROIs calibradas: caída de elixir ($\Delta E \le -1.5$), consumo y rotación del slot de carta en mano, y elevación previa de la carta (borde blanco).
+- **Paso 4A (Calibración Espacial de UI):** **100% COMPLETADO Y VALIDADO** en `notebooks/02-ui-bounding-box.ipynb` con los metadatos consolidados en R2 (`metadata/ui_layouts.json`).
+- **Siguiente paso prioritario:** **Paso 4B: Extracción de jugadas y construcción del dataset de pares (`notebooks/03-action-extraction.ipynb`)**.
+  - Consume los segmentos de `metadata/segmented_matches.json` y los bounding boxes espaciales de `metadata/ui_layouts.json`.
+  - Monitorear el gameplay en las ROIs calibradas: caída neta de elixir ($\Delta E \le -1.5$), consumo y rotación del slot de carta en mano, y elevación previa de la carta (borde blanco).
   - Identificación de carta jugada mediante banco de plantillas (incluyendo versiones evolucionadas).
   - Detección de despliegue en la arena (cluster de cambio en $[t_{\text{drop}} - 0.2\text{s}, t_{\text{drop}} + 0.4\text{s}]$) y mapeo a lenguaje natural según `posiciones.txt`.
-  - Descarte de muestras con oclusión de emotes en mano y generación de ejemplos de "esperar".
+  - Descarte de muestras con oclusión de emotes en mano (panel de texto cubriendo las cartas) y generación de ejemplos de "esperar".
 
 ---
 
