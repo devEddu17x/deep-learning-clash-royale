@@ -39,9 +39,9 @@ El proyecto está organizado en etapas secuenciales modulares:
     └─ Resiliencia: Checkpointing atómico en R2 (S3 API) y limpieza de .mp4 por video
        │
        ▼
- 4. Calibración Espacial de UI (notebooks/02-ui-calibration.ipynb) [COMPLETADO]
-    ├─ Anclaje de arena, dock, 4 slots de cartas (con elevación), elixir y emotes
-    ├─ Blindaje para 16:9, notch / Dynamic Island, Android alto y tablets
+ 4. Calibración Espacial de UI (notebooks/02-ui-bounding-box.ipynb) [COMPLETADO]
+    ├─ Anclaje infalible por pico de elixir, 4 slots de cartas (con elevación) y arena jugable
+    ├─ Blindaje para 16:9, notch / Dynamic Island, Android alto y bandas laterales
     └─ Persistencia: metadata/layouts/<video_id>.json y ui_layouts.json en R2
        │
        ▼
@@ -59,10 +59,11 @@ El proyecto está organizado en etapas secuenciales modulares:
 │   └── public/                    # Frontend de anotación y marcado de cajas
 ├── docs/                          # Documentación técnica
 │   ├── project-idea.md            # Visión general y definición del problema
-│   └── segmentation-spec.md       # Especificación del anclaje de reloj y máquina de estados
+│   ├── segmentation-spec.md       # Especificación del anclaje de reloj y máquina de estados
+│   └── ui-bounding-box-spec.md    # Especificación de calibración espacial y bounding boxes
 ├── notebooks/                     # Procesamiento en Kaggle / Jupyter
 │   ├── 01-segmentation.ipynb      # Pipeline de segmentación con persistencia atómica en R2
-│   └── 02-ui-calibration.ipynb    # Calibración espacial de UI (slots, elixir, arena, emotes)
+│   └── 02-ui-bounding-box.ipynb   # Calibración espacial de UI (slots, elixir, arena)
 ├── scripts/                       # Herramientas de automatización local
 │   └── sync_to_r2.py              # Descarga de YouTube en H.264 y subida directa a R2
 ├── AGENTS.md                      # Contexto integral y reglas de desarrollo para agentes IA
