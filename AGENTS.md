@@ -75,22 +75,29 @@ Detalles en `docs/project-idea.md`.
   - Manifiesto global consolidado: `metadata/segmented_matches.json`.
 - **Nota técnica:** No se pueden editar archivos `.ipynb` directamente con `replace_file_content`; usar scripts Python/json o reescribir con `write_to_file`.
 
+### E. Calibración Espacial de UI (`notebooks/02-ui-calibration.ipynb`)
+
+- Desacopla la calibración espacial de la extracción de jugadas (Principio de Responsabilidad Única).
+- Aprovecha los segmentos del Notebook 01 tomando un segundo seguro de gameplay confirmado ($t_{\text{start}} + 8\text{ s}$).
+- Algoritmo de calibración multi-dispositivo (16:9, notch / Dynamic Island, Android alto, tablets):
+  - Detecta el contenedor azul inferior (dock) y la barra de elixir filtrando la línea continua de magenta.
+  - Ancla con precisión matemática: arena jugable, dock, 4 slots de cartas (con margen superior de elevación para selección de carta con borde blanco brillante), próxima carta, botón de emote y área de drawer de emotes.
+  - Checkpointing atómico en R2 vía API S3: `metadata/layouts/<video_id>.json` y consolidado `metadata/ui_layouts.json`.
+  - Galería visual con recuadros de colores para inspección humana inmediata.
+
 ---
 
 ## 4. Estado Actual y Siguiente Tarea Pendiente
 
-- **Infraestructura de datos y sync a R2:** 100% completada y funcionando. Códec de descarga fijado a H.264/AVC1 en `scripts/sync_to_r2.py`.
-- **Paso 3 del plan (Segmentación de partidas por reloj en notebook):** **100% COMPLETADO Y VALIDADO**.
-  - Implementado en `notebooks/01-segmentation.ipynb` mediante un pipeline modular y resiliente (10 celdas secuenciales, 0 variables huérfanas):
-    - **Fase 1:** Anclaje inmutable universal de la caja en el cuadrante superior derecho amplio (independiente de aspect ratio y notch).
-    - **Fase 2:** Máquina de estados a 1 fps con anti-glitch por *lookahead*, unión con Overtime, separación en cortes rápidos de edición, fin exacto por meseta congelada de torre y salida en `MM:SS` con enlaces directos a YouTube.
-    - **Persistencia y Resiliencia en R2:** Pipeline incremental video por video. Guarda cada segmentación de forma atómica directo en Cloudflare R2 vía API S3 (`metadata/segments/<video_id>.json`), salta videos ya procesados en 0s (idempotencia) y elimina los `.mp4` locales para procesar 12h+ en Kaggle sin riesgo de saturar disco ni perder datos. Compila el manifiesto consolidado `metadata/segmented_matches.json`.
-  - Reglas visuales y detalles técnicos documentados a fondo en `docs/segmentation-spec.md`.
-- **Siguiente paso prioritario (ARRANQUE EN NUEVO CHAT):** **Paso 4 del plan: Extracción de jugadas y construcción del dataset de pares (4 frames -> acción)**.
-  - Diseñar el detector de jugada: identificar en qué instante $t$ se suelta una carta a la arena (reducción de cartas en mano, caída del contador de elixir o aparición del sprite de la tropa).
-  - Tomar el frame actual justo antes de colocar la carta ($t_{\text{jugada}} - 0.5\text{ a }1\text{ s}$) y los 3 frames previos ($-6\text{s}, -4\text{s}, -2\text{s}$).
-  - Detectar qué carta se jugó y en qué cuadrícula de la arena se soltó (mapeo a lenguaje natural).
-  - Detector de oclusión de emotes: descartar instantes donde el panel de mensajes tapa las cartas en mano.
+- **Infraestructura de datos y sync a R2:** 100% completada y funcionando.
+- **Paso 3 del plan (Segmentación de partidas):** **100% COMPLETADO Y VALIDADO** en `notebooks/01-segmentation.ipynb`.
+- **Paso 4A (Calibración Espacial de UI):** **100% IMPLEMENTADO** en `notebooks/02-ui-calibration.ipynb`.
+- **Siguiente paso prioritario:** **Paso 4B: Extracción de jugadas y construcción del dataset (`notebooks/03-action-extraction.ipynb`)**.
+  - Consume los segmentos de `metadata/segmented_matches.json` y las zonas espaciales fijas de `metadata/ui_layouts.json`.
+  - Monitorear el gameplay en las ROIs calibradas: caída de elixir ($\Delta E \le -1.5$), consumo y rotación del slot de carta en mano, y elevación previa de la carta (borde blanco).
+  - Identificación de carta jugada mediante banco de plantillas (incluyendo versiones evolucionadas).
+  - Detección de despliegue en la arena (cluster de cambio en $[t_{\text{drop}} - 0.2\text{s}, t_{\text{drop}} + 0.4\text{s}]$) y mapeo a lenguaje natural según `posiciones.txt`.
+  - Descarte de muestras con oclusión de emotes en mano y generación de ejemplos de "esperar".
 
 ---
 
