@@ -39,7 +39,13 @@ El proyecto está organizado en etapas secuenciales modulares:
     └─ Resiliencia: Checkpointing atómico en R2 (S3 API) y limpieza de .mp4 por video
        │
        ▼
- 4. Extracción de Jugadas y Pares de Entrenamiento [SIGUIENTE PASO]
+ 4. Calibración Espacial de UI (notebooks/02-ui-calibration.ipynb) [COMPLETADO]
+    ├─ Anclaje de arena, dock, 4 slots de cartas (con elevación), elixir y emotes
+    ├─ Blindaje para 16:9, notch / Dynamic Island, Android alto y tablets
+    └─ Persistencia: metadata/layouts/<video_id>.json y ui_layouts.json en R2
+       │
+       ▼
+ 5. Extracción de Jugadas y Pares (notebooks/03-action-extraction.ipynb) [SIGUIENTE PASO]
     └─ Detección de $t_{\text{jugada}}$, extracción de 4 frames y etiquetado a texto
 ```
 
@@ -55,7 +61,8 @@ El proyecto está organizado en etapas secuenciales modulares:
 │   ├── project-idea.md            # Visión general y definición del problema
 │   └── segmentation-spec.md       # Especificación del anclaje de reloj y máquina de estados
 ├── notebooks/                     # Procesamiento en Kaggle / Jupyter
-│   └── 01-segmentation.ipynb      # Pipeline de segmentación con persistencia atómica en R2
+│   ├── 01-segmentation.ipynb      # Pipeline de segmentación con persistencia atómica en R2
+│   └── 02-ui-calibration.ipynb    # Calibración espacial de UI (slots, elixir, arena, emotes)
 ├── scripts/                       # Herramientas de automatización local
 │   └── sync_to_r2.py              # Descarga de YouTube en H.264 y subida directa a R2
 ├── AGENTS.md                      # Contexto integral y reglas de desarrollo para agentes IA
