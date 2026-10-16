@@ -90,13 +90,17 @@ Las cartas están ancladas estrictamente al tope de la barra de elixir:
 - Para $i \in \{0, 1, 2, 3\}$:
   $$\text{slot}_i = [\text{hand\_left} + i \cdot (\text{card\_w} + \text{gap}), \text{slot\_top\_y}, \text{card\_w}, \text{card\_h}]$$
 
-### 5. Próxima Carta y Botón de Emotes
+### 5. Próxima Carta y Botón de Emotes (Descartados en Etapas 03 y 04)
 - **Próxima Carta (`next_card_box`):**
   - $\text{next\_w} = 0.135 \cdot gw$, $\text{next\_h} = 0.150 \cdot gw$.
   - Anclada en la esquina inferior izquierda del dock: $x = gx_{\text{min}} + 0.040 \cdot gw$, $y = \text{slot\_bottom\_y} - \text{next\_h}$.
 - **Botón de Emotes (`emote_button_box`):**
   - $\text{emote\_w} = 0.140 \cdot gw$, $\text{emote\_h} = 0.085 \cdot gw$.
   - Ubicado en la parte superior izquierda del dock: $x = gx_{\text{min}} + 0.038 \cdot gw$, $y = \text{slot\_top\_y} + 0.015 \cdot gw$.
+
+> [!WARNING]
+> **Supuesto descartado tras inspección del lote completo (52 videos):**
+> Las cajas `next_card_box` y `emote_button_box` sufren desplazamientos no lineales entre distintos *aspect ratios* y solo quedan perfectamente centradas en ~20% de las partidas. Por ello, **los Notebooks 03 y 04 prescinden por completo de `next_card_box` y `emote_button_box`**, utilizando exclusivamente `arena_box`, `elixir_bar_box` y los 4 `card_slots` (que mantienen 100% de precisión).
 
 ### 6. Cuadrícula Jugable de la Arena (`arena_box`)
 Delimita estrictamente las baldosas cuadradas reales donde es válido colocar tropas:
