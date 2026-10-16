@@ -1,0 +1,113 @@
+video_id,candidate_id,timestamp_sec,drop_estimate,signal,decision,reason,state,card,score
+4Tt7nuuy-Bg,7611a9ef15209f16a695,120.512,2.7,revisar_caida,descartado,carta_slot_o_historia_insuficiente,slot_o_historia_insuficiente,,
+4Tt7nuuy-Bg,f3bb871475c742fdd77a,122.103,1.7,doble_señal,descartado,coste_inconsistente_con_caida_de_elixir,propuesta,Cohete,0.9271897116459766
+4Tt7nuuy-Bg,221245e361774372943b,123.409,1.0,doble_señal,descartado,carta_ambiguo,ambiguo,,0.6318846546386873
+4Tt7nuuy-Bg,d1f308ca54b4ace9cf92,123.61,2.2,doble_señal,descartado,carta_ambiguo,ambiguo,,0.6319255148147738
+4Tt7nuuy-Bg,dc2d1cb0b64a69a1c946,134.21,3.9,doble_señal,descartado,zona_fuera_de_campo_propio,propuesta,Princesa,0.7620189503032297
+4Tt7nuuy-Bg,3e7e987974c9b962b508,143.302,4.9,doble_señal,aceptado_auto,,propuesta,Príncipe oscuro,0.9328453338463786
+4Tt7nuuy-Bg,666134676c1e5968e3ae,147.806,1.9,slot_ambiguo,descartado,carta_slot_o_historia_insuficiente,slot_o_historia_insuficiente,,
+4Tt7nuuy-Bg,ea982c5f250a1177499b,174.113,3.4,doble_señal,descartado,localizacion_ambigua,propuesta,Barril de esqueletos,0.8956923440200767
+4Tt7nuuy-Bg,6be14d34c37b39a556f8,175.301,2.7,doble_señal,descartado,zona_fuera_de_campo_propio,propuesta,Barril de duendes,0.9335552707367287
+4Tt7nuuy-Bg,2e9db7fb3db4ce181d8c,177.512,0.6,doble_señal,descartado,coste_inconsistente_con_caida_de_elixir,propuesta,Duende lanzadardos,0.915056937944064
+4Tt7nuuy-Bg,5568eecf8204356c325e,177.813,2.2,doble_señal,aceptado_auto,,propuesta,Duende lanzadardos,0.7748163942250343
+4Tt7nuuy-Bg,3beff02a7b6cf657b357,190.003,2.8,doble_señal,descartado,localizacion_ambigua,propuesta,Princesa,0.8262901195341205
+4Tt7nuuy-Bg,51b33130e5b7a4efc7cb,208.305,3.8,doble_señal,descartado,zona_fuera_de_campo_propio,propuesta,Príncipe oscuro,0.8282525840617677
+4Tt7nuuy-Bg,897bbd3eee289db8bb83,214.3,2.9,doble_señal,descartado,zona_fuera_de_campo_propio,propuesta,Barril de esqueletos,0.8993412104575559
+4Tt7nuuy-Bg,22037e7368337355e759,216.209,1.7,doble_señal,descartado,coste_inconsistente_con_caida_de_elixir,propuesta,Torre infernal,0.9475543751265816
+4Tt7nuuy-Bg,567a4a937e314c510f29,216.51,1.3,doble_señal,descartado,coste_inconsistente_con_caida_de_elixir,propuesta,Barril de duendes,0.924753500540083
+4Tt7nuuy-Bg,ace328eed8ffca88338e,219.608,2.9,doble_señal,descartado,localizacion_ambigua,propuesta,Duende lanzadardos,0.91179239763082
+4Tt7nuuy-Bg,e16a63f95626edb239f8,232.602,1.7,doble_señal,descartado,coste_inconsistente_con_caida_de_elixir,propuesta,Princesa,0.8303979385006317
+4Tt7nuuy-Bg,e827d8367439816a5477,239.501,1.1,doble_señal,descartado,coste_inconsistente_con_caida_de_elixir,propuesta,Cohete,0.9388590129387223
+4Tt7nuuy-Bg,ac4338b68d407bc9c5f5,239.802,4.3,doble_señal,descartado,coste_inconsistente_con_caida_de_elixir,propuesta,Cohete,0.9328042189505948
+4Tt7nuuy-Bg,54250f7357e8305cb9e6,245.713,4.2,slot_ambiguo,descartado,carta_slot_o_historia_insuficiente,slot_o_historia_insuficiente,,
+4Tt7nuuy-Bg,6b83439f9fe10558ba53,252.612,2.4,doble_señal,descartado,localizacion_ambigua,propuesta,Barril de esqueletos,0.8693326350509234
+4Tt7nuuy-Bg,6abdf4f56ad59e576d4f,253.801,2.8,slot_ambiguo,descartado,carta_slot_o_historia_insuficiente,slot_o_historia_insuficiente,,
+4Tt7nuuy-Bg,6ed45762ab1ad7ddb2c7,257.117,2.9,doble_señal,descartado,localizacion_ambigua,propuesta,Duende lanzadardos,0.7907910660394195
+4Tt7nuuy-Bg,3555b642387fac7e0986,267.616,0.9,doble_señal,descartado,coste_inconsistente_con_caida_de_elixir,propuesta,Cohete,0.9244666575265303
+4Tt7nuuy-Bg,3c99d6e8488f69fd808e,267.9,4.3,slot_ambiguo,descartado,carta_slot_o_historia_insuficiente,slot_o_historia_insuficiente,,
+4Tt7nuuy-Bg,53a2d1aa072045897857,273.208,1.7,doble_señal,descartado,coste_inconsistente_con_caida_de_elixir,propuesta,Duende lanzadardos,0.9242851685928318
+4Tt7nuuy-Bg,66a0a297730f518a3788,274.816,0.6,slot_ambiguo,descartado,carta_slot_o_historia_insuficiente,slot_o_historia_insuficiente,,
+4Tt7nuuy-Bg,105e5303159aef90021f,280.107,0.7,slot_ambiguo,descartado,carta_slot_o_historia_insuficiente,slot_o_historia_insuficiente,,
+4Tt7nuuy-Bg,d1b5baf9944b57fdee17,280.409,3.2,slot_ambiguo,descartado,carta_slot_o_historia_insuficiente,slot_o_historia_insuficiente,,
+4Tt7nuuy-Bg,0b54f42ca7ff80403843,284.109,2.3,doble_señal,descartado,localizacion_ambigua,propuesta,Barril de esqueletos,0.9095798050839704
+4Tt7nuuy-Bg,94539f0e8f99b9bf0566,284.31,0.9,doble_señal,descartado,coste_inconsistente_con_caida_de_elixir,propuesta,Barril de esqueletos,0.9095705336540636
+4Tt7nuuy-Bg,eb4457f506112b182949,287.106,2.9,doble_señal,descartado,zona_fuera_de_campo_propio,propuesta,Barril de duendes,0.9132034925181169
+KcLv14GDAns,16189b16fc2a4131a82d,8.9,3.9,doble_señal,descartado,localizacion_ambigua,propuesta,Mini P.E.K.K.A.,0.8303846912195567
+KcLv14GDAns,917c2d073e5aa9b5c6fe,19.4,3.0,doble_señal,descartado,localizacion_ambigua,propuesta,Lanzafuegos,0.7564701496333246
+KcLv14GDAns,ac0ce97c5576d206bae2,22.4,1.7,doble_señal,aceptado_auto,,propuesta,Esqueletos,0.8419890827984283
+KcLv14GDAns,612d0088de7aca1c0d44,29.1,4.5,doble_señal,descartado,localizacion_ambigua,propuesta,Dragón infernal,0.7999522802944148
+KcLv14GDAns,bc009a5c09e1e8a92348,33.4,5.0,slot_ambiguo,descartado,carta_slot_o_historia_insuficiente,slot_o_historia_insuficiente,,
+KcLv14GDAns,e5f456d15795691e9de2,39.9,3.0,doble_señal,aceptado_auto,,propuesta,Caballero,0.7319171783859265
+KcLv14GDAns,3ff9966208ea230d0181,48.4,3.0,slot_ambiguo,descartado,carta_slot_o_historia_insuficiente,slot_o_historia_insuficiente,,
+KcLv14GDAns,13b566f042bbfea33333,67.9,3.1,slot_ambiguo,descartado,carta_slot_o_historia_insuficiente,slot_o_historia_insuficiente,,
+KcLv14GDAns,ef00c721741a1848fe34,68.3,1.4,slot_ambiguo,descartado,carta_slot_o_historia_insuficiente,slot_o_historia_insuficiente,,
+KcLv14GDAns,e40723265fcd8183a736,72.4,2.2,doble_señal,descartado,coste_inconsistente_con_caida_de_elixir,propuesta,Dragón infernal,0.8042178981301296
+KcLv14GDAns,7a8acba5576a876262de,82.2,0.6,doble_señal,descartado,zona_fuera_de_campo_propio,propuesta,Esqueletos,0.8305274638625062
+KcLv14GDAns,7a6e8e68ea41d65b94cd,90.7,2.6,doble_señal,aceptado_auto,,propuesta,Caballero,0.8159077075437814
+KcLv14GDAns,a70cadd125a01d216347,102.2,2.7,doble_señal,aceptado_auto,,propuesta,Lanzafuegos,0.7868596518052026
+KcLv14GDAns,659ca52ca264790cb090,111.0,3.7,doble_señal,descartado,zona_fuera_de_campo_propio,propuesta,Mini P.E.K.K.A.,0.8174315153704381
+KcLv14GDAns,1cde7492d45382d47b52,124.6,4.9,doble_señal,descartado,carta_ambiguo,ambiguo,,0.44243167131279937
+KcLv14GDAns,00e36869f4f95104dfdc,133.0,3.2,doble_señal,aceptado_auto,,propuesta,Dragón infernal,0.829092955655186
+KcLv14GDAns,ab3d34722c1c3ab6d87f,133.5,1.6,doble_señal,descartado,coste_inconsistente_con_caida_de_elixir,propuesta,Dragón infernal,0.7892746024844436
+KcLv14GDAns,39d79a87a7927773a27b,135.4,1.6,doble_señal,descartado,coste_inconsistente_con_caida_de_elixir,propuesta,Caballero,0.8171717168380775
+KcLv14GDAns,1a08a7a1fbb9832d265a,142.6,2.8,doble_señal,aceptado_auto,,propuesta,Lanzafuegos,0.757442168102167
+KcLv14GDAns,0e117fc90b348f5eb896,149.3,3.5,doble_señal,aceptado_auto,,propuesta,Mini P.E.K.K.A.,0.8264557882460845
+KcLv14GDAns,5efd57f5eafbb1a262f1,152.9,7.0,doble_señal,descartado,coste_inconsistente_con_caida_de_elixir,propuesta,Bruja,0.8397334804183177
+KcLv14GDAns,6c8a82a984ec7d715e72,159.2,5.0,doble_señal,aceptado_auto,,propuesta,Dragón infernal,0.7999660394861414
+KcLv14GDAns,1655f03b45f9412df8be,164.8,2.1,doble_señal,aceptado_auto,,propuesta,Caballero,0.7872643461757196
+KcLv14GDAns,9e5d7a9619bfbf6cd55d,173.5,3.6,doble_señal,aceptado_auto,,propuesta,Dragón infernal,0.7867604636203843
+KcLv14GDAns,ad12060f8cb33637e029,173.8,1.4,doble_señal,descartado,coste_inconsistente_con_caida_de_elixir,propuesta,Dragón infernal,0.7864370910054225
+KcLv14GDAns,3d60df808da4bbe2bc26,179.6,2.8,doble_señal,descartado,zona_fuera_de_campo_propio,propuesta,Lanzafuegos,0.7955032906369116
+KcLv14GDAns,a5e53ffb874b8dae18f1,183.0,7.0,doble_señal,descartado,coste_inconsistente_con_caida_de_elixir,propuesta,Mini P.E.K.K.A.,0.8282412416915729
+KcLv14GDAns,2dbf06e912a1ddbb648d,190.0,5.0,doble_señal,aceptado_auto,,propuesta,Mini P.E.K.K.A.,0.8293530831576335
+KcLv14GDAns,40798f776b7140d7b6b5,197.1,0.7,slot_ambiguo,descartado,carta_slot_o_historia_insuficiente,slot_o_historia_insuficiente,,
+KcLv14GDAns,e80d7c7500097f39e3d9,197.3,3.0,slot_ambiguo,descartado,carta_slot_o_historia_insuficiente,slot_o_historia_insuficiente,,
+KcLv14GDAns,e9a3a9cab514b6a8a7ea,201.8,0.8,doble_señal,descartado,coste_inconsistente_con_caida_de_elixir,propuesta,Caballero,0.8138730595687892
+KcLv14GDAns,ffdcd7f699789d06d9e9,202.1,2.3,doble_señal,descartado,localizacion_ambigua,propuesta,Caballero,0.8138771209252701
+KcLv14GDAns,24419ccb6ff077e6536c,204.5,3.0,doble_señal,descartado,localizacion_ambigua,propuesta,Lanzafuegos,0.8030460456235187
+KcLv14GDAns,cbc9f7c3f202ee7ab7a9,214.5,7.0,slot_ambiguo,descartado,carta_slot_o_historia_insuficiente,slot_o_historia_insuficiente,,
+KcLv14GDAns,9dc616b6f0f6582e9e00,220.7,5.0,doble_señal,descartado,localizacion_ambigua,propuesta,Dragón infernal,0.7999601089620818
+KcLv14GDAns,938b62d9b82e733731ec,226.3,4.0,doble_señal,descartado,localizacion_ambigua,propuesta,Mini P.E.K.K.A.,0.7266651287930442
+KcLv14GDAns,a55b5e7395e15278a3ee,232.9,4.0,doble_señal,descartado,localizacion_ambigua,propuesta,Caballero,0.8103554698565864
+QnFw3kiwOqo,76f5090c35b196ba2546,7.202,1.8,doble_señal,descartado,"frames_no_validos: Frame 0.5019999999999998 fuera de [2.0, 177.0).",propuesta,Rompemuros,0.7999837120664377
+QnFw3kiwOqo,5cb1e7c760dadc1ad0cc,11.006,2.4,doble_señal,descartado,coste_inconsistente_con_caida_de_elixir,propuesta,Esqueletos,0.8296592992246206
+QnFw3kiwOqo,46589d50183f8aee5e51,11.801,0.6,doble_señal,descartado,localizacion_ambigua,propuesta,Esqueletos,0.8295148623526148
+QnFw3kiwOqo,035e55d4b753b1a1ce71,14.016,2.6,doble_señal,aceptado_auto,,propuesta,Lanzafuegos,0.7970265177745461
+QnFw3kiwOqo,7b34a6d3cdf3ce2c4ae9,21.404,1.6,slot_ambiguo,descartado,carta_slot_o_historia_insuficiente,slot_o_historia_insuficiente,,
+QnFw3kiwOqo,fdc868ce7372592566ad,21.708,2.5,slot_ambiguo,descartado,carta_slot_o_historia_insuficiente,slot_o_historia_insuficiente,,
+QnFw3kiwOqo,3440facb8c7082196a67,33.712,0.6,doble_señal,descartado,coste_inconsistente_con_caida_de_elixir,propuesta,Torre infernal,0.8866319361682671
+QnFw3kiwOqo,d7895b2d2d12221a305d,34.0,4.4,doble_señal,descartado,carta_ambiguo,ambiguo,,0.6024854502199354
+QnFw3kiwOqo,3f9e38b175933ef2e4cf,38.311,0.7,slot_ambiguo,descartado,carta_slot_o_historia_insuficiente,slot_o_historia_insuficiente,,
+QnFw3kiwOqo,afe6200c18d79856757a,38.615,1.0,slot_ambiguo,descartado,carta_slot_o_historia_insuficiente,slot_o_historia_insuficiente,,
+QnFw3kiwOqo,9247ed4c59924f126f70,42.707,1.5,doble_señal,aceptado_auto,,propuesta,Esqueletos,0.8290227737095167
+QnFw3kiwOqo,d7f1bf605e273d9be073,63.806,1.8,doble_señal,aceptado_auto,,propuesta,Murciélagos,0.875932406444748
+QnFw3kiwOqo,cfd05b7b437bf5880f5c,65.615,3.7,revisar_caida,descartado,carta_slot_o_historia_insuficiente,slot_o_historia_insuficiente,,
+QnFw3kiwOqo,13ca1d6735861cbf2431,69.91,1.7,doble_señal,descartado,coste_inconsistente_con_caida_de_elixir,propuesta,Lanzafuegos,0.8402011733289741
+QnFw3kiwOqo,30ccbd4353952a6ce1c1,70.214,1.5,slot_ambiguo,descartado,carta_slot_o_historia_insuficiente,slot_o_historia_insuficiente,,
+QnFw3kiwOqo,09a2c0250f6817f7a544,86.411,2.7,revisar_caida,descartado,carta_slot_o_historia_insuficiente,slot_o_historia_insuficiente,,
+QnFw3kiwOqo,1a19a520826d360c93c1,90.316,0.6,doble_señal,descartado,carta_excluida_del_proyecto,excluida_del_proyecto,,0.7317379610953448
+QnFw3kiwOqo,0dd7ff487df248cb15d9,98.515,1.8,doble_señal,descartado,coste_inconsistente_con_caida_de_elixir,propuesta,Torre infernal,0.9060384931060349
+QnFw3kiwOqo,0bbb2485a73da706fba0,98.802,2.4,revisar_caida,descartado,carta_slot_o_historia_insuficiente,slot_o_historia_insuficiente,,
+QnFw3kiwOqo,41bc289310cb1ae71c8d,100.611,1.5,doble_señal,aceptado_auto,,propuesta,Esqueletos,0.8333345592336561
+QnFw3kiwOqo,028b45067260b0825911,106.614,3.8,doble_señal,aceptado_auto,,propuesta,Lanzafuegos,0.7773027922041655
+QnFw3kiwOqo,68a04312deac2748c667,110.3,1.8,slot_ambiguo,descartado,carta_slot_o_historia_insuficiente,slot_o_historia_insuficiente,,
+QnFw3kiwOqo,4ba0cebe88d134a39079,118.516,0.7,doble_señal,descartado,coste_inconsistente_con_caida_de_elixir,propuesta,Rompemuros,0.7966724091817315
+QnFw3kiwOqo,8a8a450581624faa3221,118.804,1.0,doble_señal,descartado,coste_inconsistente_con_caida_de_elixir,propuesta,Rompemuros,0.7965214529428737
+QnFw3kiwOqo,36f1f7f905f4a33ea82c,130.605,2.4,doble_señal,descartado,localizacion_ambigua,propuesta,Lanzafuegos,0.7761357859266709
+QnFw3kiwOqo,d0fcde3d368c03ede6cd,136.201,1.5,doble_señal,descartado,zona_fuera_de_campo_propio,propuesta,El Tronco,0.8645266904737915
+QnFw3kiwOqo,fdb93d1bf156254a7c8c,136.606,0.7,doble_señal,descartado,coste_inconsistente_con_caida_de_elixir,propuesta,El Tronco,0.8481638760532383
+QnFw3kiwOqo,2411e6d93358519907cb,138.906,4.6,doble_señal,descartado,localizacion_ambigua,propuesta,Excavadora de duendes,0.7818716417858925
+QnFw3kiwOqo,201a1d442dccbaaab59d,140.309,2.8,doble_señal,descartado,zona_fuera_de_campo_propio,propuesta,Paquete real,0.8120493267261784
+QnFw3kiwOqo,42239f4fe252b4511067,142.202,1.5,slot_ambiguo,descartado,carta_slot_o_historia_insuficiente,slot_o_historia_insuficiente,,
+QnFw3kiwOqo,11806ef14bf4a52c2f1e,147.207,0.6,doble_señal,descartado,coste_inconsistente_con_caida_de_elixir,propuesta,Torre infernal,0.8127520442819968
+QnFw3kiwOqo,fef7204a8322c171206f,147.511,3.4,doble_señal,descartado,coste_inconsistente_con_caida_de_elixir,propuesta,Torre infernal,0.9110063143220142
+QnFw3kiwOqo,17e2b97fd131fc7092e4,149.709,0.8,doble_señal,descartado,coste_inconsistente_con_caida_de_elixir,propuesta,Rompemuros,0.7738949650887665
+QnFw3kiwOqo,a303563e205d60f218be,152.109,0.7,doble_señal,descartado,coste_inconsistente_con_caida_de_elixir,propuesta,El Tronco,0.8621312540466954
+QnFw3kiwOqo,96c01f005edae33e9979,152.414,1.0,doble_señal,descartado,coste_inconsistente_con_caida_de_elixir,propuesta,El Tronco,0.8210799582016317
+QnFw3kiwOqo,b04abceb18d0b5b46d5b,153.716,1.7,doble_señal,descartado,carta_ambiguo,ambiguo,,0.6410105011244548
+QnFw3kiwOqo,8468ec3f380aa9ea319b,164.603,3.7,doble_señal,descartado,localizacion_ambigua,propuesta,Excavadora de duendes,0.7670505714743711
+QnFw3kiwOqo,8203d3fda082e4f3a3b2,166.514,1.8,doble_señal,descartado,coste_inconsistente_con_caida_de_elixir,propuesta,Torre infernal,0.8958042516330622
+QnFw3kiwOqo,39b21532e3f6f0e39218,168.103,0.7,doble_señal,descartado,coste_inconsistente_con_caida_de_elixir,propuesta,Paquete real,0.8272750940405849
+QnFw3kiwOqo,9a91a39bb1135bf52f22,175.103,0.6,doble_señal,descartado,coste_inconsistente_con_caida_de_elixir,propuesta,Torre infernal,0.9063435970102479
+QnFw3kiwOqo,79039079002016fb83cb,175.408,3.5,doble_señal,descartado,coste_inconsistente_con_caida_de_elixir,propuesta,El Tronco,0.8591901621372087
+QnFw3kiwOqo,39c9729cd373354f64d2,176.304,1.7,slot_ambiguo,descartado,carta_slot_o_historia_insuficiente,slot_o_historia_insuficiente,,

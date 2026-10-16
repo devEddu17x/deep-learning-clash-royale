@@ -9,6 +9,12 @@ authors = [
 requires-python = ">=3.14"
 dependencies = [
     "boto3>=1.43.111",
+    "ipykernel>=7.4.0",
+    "matplotlib>=3.11.2",
+    "numpy>=2.5.4",
+    "opencv-python-headless>=5.0.0.93",
+    "pandas>=3.0.6",
+    "python-dotenv>=1.2.4",
     "requests>=2.34.2",
     "yt-dlp>=2026.8.19",
 ]
