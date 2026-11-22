@@ -1,0 +1,12 @@
+aws_region  = "us-east-1"
+aws_profile = "your-profile"
+
+project_name = "dp-clash-royale"
+environment  = "dev"
+
+# Optional overrides:
+# sagemaker_instance_type = "ml.g5.xlarge"
+# sagemaker_image_tag     = "latest"
+# sagemaker_model_data_url  = "s3://dp-clash-royale-dev-models-<account_id>/model.tar.gz"
+# throttling_rate_limit   = 5
+# throttling_burst_limit  = 10
