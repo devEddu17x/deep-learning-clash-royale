@@ -1,0 +1,6 @@
+profile      = "your_profile"
+bucket       = "bucket"
+encrypt      = true
+key          = "dp-clash-royale/qa/terraform.tfstate"
+region       = "us-east-1"
+use_lockfile = true
