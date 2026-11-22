@@ -60,11 +60,23 @@ Detalles en [`docs/project-idea.md`](file:///home/eddu/dev/reinforcement-learnin
   3. **Estructuras defensivas (`Building` como `inferno-tower`, `cannon`, `tesla`):** Se colocan en el centro del campo propio (Zona 5) a menudo mientras hay tropas peleando en los puentes. Se distinguen del combate en el puente por su **persistencia estática** (aparecen respecto a $t_{\text{pre}}$ y permanecen inmóviles entre $t+0.4\text{s}$ y $t+0.9\text{s}$) dentro del rectángulo central válido de construcción.
 - Checkpoints en `s3://cr-videos/metadata/placements/<video_id>.json` y consolidado en `s3://cr-videos/metadata/arena_placements.json`. Detector actual: etiqueta flotante del nombre de la carta (principal) + aparición neta (fallback). **Estado y pendientes en [`docs/HANDOFF-nb04.md`](file:///home/eddu/dev/reinforcement-learning-clash-royale/docs/HANDOFF-nb04.md).**
 
+### G. Infraestructura AWS de Despliegue (`terraform/`)
+- Especificación técnica en [`docs/deployment-infra-spec.md`](file:///home/eddu/dev/reinforcement-learning-clash-royale/docs/deployment-infra-spec.md).
+- [`terraform/bootstrap.sh`](file:///home/eddu/dev/reinforcement-learning-clash-royale/terraform/bootstrap.sh): provisiona y configura el bucket S3 remoto para `tfstate` (`<project>-<env>-<account_id>`) con bloqueo nativo (`use_lockfile = true`).
+- `terraform/environments/<env>/` (`dev`, `qa`, `prod`): archivos separados (`backend.tf`, `backend.hcl`, `locals.tf`, `main.tf`, `outputs.tf`, `providers.tf`, `terraform.tfvars`, `variables.tf`, `versions.tf`); `main.tf` invoca los módulos pasándoles sus variables.
+- `terraform/modules/<service>/`: replica una estructura similar (`variables.tf`, `outputs.tf` y archivos nombrados por servicio/recurso).
+- `terraform/modules/integrations/<x>-<y>/`: para resolver dependencias circulares o condiciones de carrera entre módulos `x` e `y` ya instanciados en `main.tf`, aislando en el módulo de integración únicamente los recursos que requieren que ambos existan.
+- `terraform/services/lambda/<name>/`: código fuente de cada función Lambda en su propia carpeta.
+- `apps/<name>/`: código de aplicaciones (por ejemplo, APIs) separadas por carpeta.
+
 ---
 
 ## 4. Convenciones para Agentes
 
 - **Nota técnica sobre `.ipynb`:** No se pueden editar archivos `.ipynb` directamente con `replace_file_content`; usar scripts Python con `json` o reescribir con `write_to_file`, verificando siempre con `compile()` todas las celdas de código.
+- **Idioma en código:** Todo comentario, variable, identificador, output y texto dentro del código (Terraform, scripts, Lambdas y apps) debe escribirse estrictamente en **inglés** (no se admite español dentro del código).
+- **Bloques `dynamic` en Terraform:** Evitar `dynamic` salvo cuando sea estrictamente necesario; nunca anidar ni encadenar bloques `dynamic`.
+- **Comentarios limpios (sin *AI slop*):** No añadir comentarios excesivos ni obvios; escribir código autoexplicativo y comentar únicamente decisiones no triviales.
 - Mantener docstrings y comentarios existentes no relacionados con los cambios.
 - Rutas absolutas en los enlaces (`file:///...`).
 - Respuestas en español, directas y al grano.
